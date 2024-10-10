@@ -1,12 +1,25 @@
 require('dotenv').config();
 
 const { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const cron = require('node-cron');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const cron = require('node-cron');
+const express = require('express');
 
 const token = process.env.DISCORD_TOKEN;
 const serverId = process.env.SERVER_ID;
 const channelId = process.env.CHANNEL_ID;
+
+// Создание HTTP-сервера
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+    res.send('Бот работает!');
+});
+
+app.listen(port, () => {
+    console.log(`Сервер запущен на порту ${port}`);
+});
 
 // Массив эмодзи, соответствующий каждому месяцу
 const emojis = ['❄️', '🥶', '💐', '🌺', '🌸🖐', '😎', '🌞', '🍎', '🎒', '🍁', '🍂', '🎄'];
