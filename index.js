@@ -33,13 +33,19 @@ async function updateChannelName() {
     const channel = guild.channels.cache.get(channelId);
 
     const currentDate = new Date();
-    const options = { timeZone: 'Europe/Moscow', day: 'numeric', month: 'long' };
+    const options = { timeZone: 'Europe/Moscow', hour: 'numeric', day: 'numeric', month: 'long' };
     const formatter = new Intl.DateTimeFormat('ru-RU', options);
-    const [day, month] = formatter.format(currentDate).split(' ');
+    const [day, month, hour, minute] = formatter.formatToParts(currentDate).filter(part => part.type !== 'literal').map(part => part.value);
     const monthIndex = currentDate.getMonth();
     const emojiForMonth = emojis[monthIndex];  // Эмодзи для текущего месяца
 
-    const newName = `${emojiForMonth}┃Дата: ${day} ${month}`;
+    let newName = `${emojiForMonth}┃Дата: ${day} ${month}`;
+
+    // Если время 1:05 по МСК, добавить "ОБНОВИЛ"
+    if (parseInt(hour) === 1 && parseInt(minute) === 5) {
+        newName += " ОБНОВИЛ";
+    }
+
     await channel.setName(newName);
     console.log(`Имя канала изменено на: ${newName}`);
 }
@@ -86,8 +92,8 @@ client.once('ready', async () => {
     // Логирование следующего обновления
     logNextUpdateTime();
 
-    // Запуск задачи по расписанию каждый день в 00:00 по МСК 
-    cron.schedule('0 0 * * *', () => {
+    // Запуск задачи по расписанию каждый день в 1:05 по МСК
+    cron.schedule('5 1 * * *', () => {
         updateChannelName();
         logNextUpdateTime(); // Обновление следующего времени после смены
     }, {
