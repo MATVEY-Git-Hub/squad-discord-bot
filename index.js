@@ -102,7 +102,7 @@ client.on('interactionCreate', async interaction => {
             .setDescription(`${emojiForMonth}┃Сегодня: **${day} ${month}**`) // Описание
             .setThumbnail('https://i.imgur.com/MyLllJx.png') // Иконка
             .setTimestamp(new Date()) // Текущая дата/время
-            .setFooter({ text: 'Дата предоставлена SQUAD по МСК', iconURL: 'https://i.imgur.com/oVwkatn.png' }); // Подпись
+            .setFooter({ text: 'Дата предоставлена SQUAD по МСК', iconURL: 'https://i.imgur.com/MyLllJx.png' }); // Подпись
 
         await interaction.reply({ embeds: [embed] }); // Отправляем embed
     }
