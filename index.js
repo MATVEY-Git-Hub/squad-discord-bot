@@ -96,6 +96,7 @@ client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand()) return;
     console.log(`Received command: ${interaction.commandName}`); // Логирование команды
     if (interaction.commandName === 'date') {
+        const { emojiForMonth, day, month } = getCurrentDateFormatted();
         // Создаём embed-сообщение
         const embed = new EmbedBuilder()
             .setColor('#a7c3ff') // Устанавливаем цвет
