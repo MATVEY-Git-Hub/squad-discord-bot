@@ -108,12 +108,12 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ embeds: [embed] }); // Отправляем embed
     } else if (interaction.commandName === 'status') {
         console.log('Handling /status command'); // Логирование команды status
-        const statusEmbed = new EmbedBuilder()
-            .setColor('#00FF00').setTitle('🟢 Статус бота')
+        const statusEmbed = new EmbedBuilder().setColor('#00FF00')
+            .setTitle('🟢 Статус бота')
             .setDescription('Бот работает стабильно!')
-            .addField('🔗 Ссылка на аптаймер', '[Проверить статус](https://stats.uptimerobot.com/m9spnIIBsW)')
-            .setTimestamp(new Date())
-            .setFooter('Статус предоставлен SQUAD', 'https://i.imgur.com/MyLllJx.png');
+            .addFields({ name: '🔗 Ссылка на аптаймер', value: '[Проверить статус](https://stats.uptimerobot.com/m9spnIIBsW)' }) // Используем addFields
+            .setTimestamp(new Date()) 
+            .setFooter({ text: 'Статус предоставлен SQUAD', iconURL: 'https://i.imgur.com/MyLllJx.png' });
         await interaction.reply({ embeds: [statusEmbed] });
         console.log('Status embed sent'); // Логирование успешной отправки
     }
