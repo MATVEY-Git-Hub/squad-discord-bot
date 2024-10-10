@@ -55,49 +55,47 @@ function getCurrentDateFormatted() {
 }
 
 // Регистрация команды /date
-const commands = [ 
-    new SlashCommandBuilder() 
-        .setName('date') 
+const commands = [
+    new SlashCommandBuilder()
+        .setName('date')
         .setDescription('Показывает сегодняшнюю дату с эмодзи месяца'),
-    new SlashCommandBuilder() 
-        .setName('status') 
+    new SlashCommandBuilder()
+        .setName('status')
         .setDescription('Показывает статус бота и ссылку на аптаймер')
 ].map(command => command.toJSON());
 
-client.once('ready', async () => { 
-    console.log(`Бот запущен как ${client.user.tag}`); 
+client.once('ready', async () => {
+    console.log(`Бот запущен как ${client.user.tag}`);
 
     // Регистрация команд через Discord API 
-    const rest = new REST({ version: '10' }).setToken(token); 
-    try { 
-        console.log('Начинаем регистрацию команд...'); 
-        await rest.put( 
+    const rest = new REST({ version: '10' }).setToken(token);
+    try {
+        console.log('Начинаем регистрацию команд...');
+        await rest.put(
             Routes.applicationGuildCommands(client.user.id, serverId), // Регистрация команды для конкретного сервера 
-            { body: commands } 
-        ); 
-        console.log('Команды успешно зарегистрированы.'); 
-    } catch (error) { 
-        console.error('Ошибка при регистрации команд:', error); 
-    } 
+            { body: commands }
+        );
+        console.log('Команды успешно зарегистрированы.');
+    } catch (error) {
+        console.error('Ошибка при регистрации команд:', error);
+    }
 
     // Запуск задачи по расписанию каждый день в 00:00 по МСК 
-    cron.schedule('0 0 * * *', () => { 
-        updateChannelName(); 
-    }, { 
+    cron.schedule('0 0 * * *', () => {
+        updateChannelName();
+    }, {
         timezone: "Europe/Moscow" // Устанавливаем часовой пояс на Москву 
-    }); 
+    });
 
     // Первое изменение имени при запуске бота 
-    updateChannelName(); 
+    updateChannelName();
 });
 
 // Обработка взаимодействия с командой
 client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand()) return;
-
+    console.log(`Received command: ${interaction.commandName}`); // Логирование команды
     if (interaction.commandName === 'date') {
-        const { emojiForMonth, day, month } = getCurrentDateFormatted();
-
         // Создаём embed-сообщение
         const embed = new EmbedBuilder()
             .setColor('#a7c3ff') // Устанавливаем цвет
@@ -109,16 +107,15 @@ client.on('interactionCreate', async interaction => {
 
         await interaction.reply({ embeds: [embed] }); // Отправляем embed
     } else if (interaction.commandName === 'status') {
-        // Создаём embed-сообщение для статуса 
+        console.log('Handling /status command'); // Логирование команды status
         const statusEmbed = new EmbedBuilder()
-            .setColor('#00FF00') // Устанавливаем цвет 
-            .setTitle('🟢 Статус бота') // Заголовок 
-            .setDescription('Бот работает стабильно!') // Описание 
-            .addField('🔗 Ссылка на аптаймер', '[Проверить статус](https://stats.uptimerobot.com/m9spnIIBsW)') // Поле со ссылкой 
-            .setTimestamp(new Date()) // Текущая дата/время 
-            .setFooter('Статус предоставлен SQUAD', 'https://i.imgur.com/MyLllJx.png'); // Подпись 
-
-        await interaction.reply({ embeds: [statusEmbed] }); // Отправляем embed 
+            .setColor('#00FF00').setTitle('🟢 Статус бота')
+            .setDescription('Бот работает стабильно!')
+            .addField('🔗 Ссылка на аптаймер', '[Проверить статус](https://stats.uptimerobot.com/m9spnIIBsW)')
+            .setTimestamp(new Date())
+            .setFooter('Статус предоставлен SQUAD', 'https://i.imgur.com/MyLllJx.png');
+        await interaction.reply({ embeds: [statusEmbed] });
+        console.log('Status embed sent'); // Логирование успешной отправки
     }
 });
 
