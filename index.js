@@ -105,6 +105,17 @@ client.on('interactionCreate', async interaction => {
             .setFooter({ text: 'Дата предоставлена SQUAD по МСК', iconURL: 'https://i.imgur.com/MyLllJx.png' }); // Подпись
 
         await interaction.reply({ embeds: [embed] }); // Отправляем embed
+    } else if (interaction.commandName === 'status') {
+        // Создаём embed-сообщение для статуса 
+        const embed = new EmbedBuilder()
+            .setColor('#00FF00') // Устанавливаем цвет 
+            .setTitle('🟢 Статус бота') // Заголовок 
+            .setDescription('Бот работает стабильно!') // Описание 
+            .addField('🔗 Ссылка на аптаймер', '[Проверить статус](https://stats.uptimerobot.com/m9spnIIBsW)') // Поле со ссылкой 
+            .setTimestamp(new Date()) // Текущая дата/время 
+            .setFooter('Статус предоставлен SQUAD', 'https://i.imgur.com/MyLllJx.png'); // Подпись 
+
+        await interaction.reply({ embeds: [embed] }); // Отправляем embed 
     }
 });
 
