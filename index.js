@@ -55,10 +55,13 @@ function getCurrentDateFormatted() {
 }
 
 // Регистрация команды /date
-const commands = [
-    new SlashCommandBuilder()
-        .setName('date')
-        .setDescription('Показывает сегодняшнюю дату')
+const commands = [ 
+    new SlashCommandBuilder() 
+        .setName('date') 
+        .setDescription('Показывает сегодняшнюю дату с эмодзи месяца'),
+    new SlashCommandBuilder() 
+        .setName('status') 
+        .setDescription('Показывает статус бота и ссылку на аптаймер')
 ].map(command => command.toJSON());
 
 client.once('ready', async () => {
