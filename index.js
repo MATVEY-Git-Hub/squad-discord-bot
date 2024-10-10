@@ -64,31 +64,31 @@ const commands = [
         .setDescription('Показывает статус бота и ссылку на аптаймер')
 ].map(command => command.toJSON());
 
-client.once('ready', async () => {
-    console.log(`Бот запущен как ${client.user.tag}`);
+client.once('ready', async () => { 
+    console.log(`Бот запущен как ${client.user.tag}`); 
 
-    // Регистрация команды через Discord API
-    const rest = new REST({ version: '10' }).setToken(token);
-    try {
-        console.log('Начинаем регистрацию команд...');
-        await rest.put(
-            Routes.applicationGuildCommands(client.user.id, serverId), // Регистрация команды для конкретного сервера
-            { body: commands }
-        );
-        console.log('Команды успешно зарегистрированы.');
-    } catch (error) {
-        console.error('Ошибка при регистрации команд:', error);
-    }
+    // Регистрация команд через Discord API 
+    const rest = new REST({ version: '10' }).setToken(token); 
+    try { 
+        console.log('Начинаем регистрацию команд...'); 
+        await rest.put( 
+            Routes.applicationGuildCommands(client.user.id, serverId), // Регистрация команды для конкретного сервера 
+            { body: commands } 
+        ); 
+        console.log('Команды успешно зарегистрированы.'); 
+    } catch (error) { 
+        console.error('Ошибка при регистрации команд:', error); 
+    } 
 
-    // Запуск задачи по расписанию каждый день в 00:00 по МСК
-    cron.schedule('0 0 * * *', () => {
-        updateChannelName();
-    }, {
-        timezone: "Europe/Moscow" // Устанавливаем часовой пояс на Москву
-    });
+    // Запуск задачи по расписанию каждый день в 00:00 по МСК 
+    cron.schedule('0 0 * * *', () => { 
+        updateChannelName(); 
+    }, { 
+        timezone: "Europe/Moscow" // Устанавливаем часовой пояс на Москву 
+    }); 
 
-    // Первое изменение имени при запуске бота
-    updateChannelName();
+    // Первое изменение имени при запуске бота 
+    updateChannelName(); 
 });
 
 // Обработка взаимодействия с командой
@@ -110,7 +110,7 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ embeds: [embed] }); // Отправляем embed
     } else if (interaction.commandName === 'status') {
         // Создаём embed-сообщение для статуса 
-        const embed = new EmbedBuilder()
+        const statusEmbed = new EmbedBuilder()
             .setColor('#00FF00') // Устанавливаем цвет 
             .setTitle('🟢 Статус бота') // Заголовок 
             .setDescription('Бот работает стабильно!') // Описание 
@@ -118,7 +118,7 @@ client.on('interactionCreate', async interaction => {
             .setTimestamp(new Date()) // Текущая дата/время 
             .setFooter('Статус предоставлен SQUAD', 'https://i.imgur.com/MyLllJx.png'); // Подпись 
 
-        await interaction.reply({ embeds: [embed] }); // Отправляем embed 
+        await interaction.reply({ embeds: [statusEmbed] }); // Отправляем embed 
     }
 });
 
