@@ -32,7 +32,8 @@ async function updateChannelName() {
     const guild = client.guilds.cache.get(serverId);
     const channel = guild.channels.cache.get(channelId);
 
-    const currentDate = new Date();
+    // Получаем дату в часовом поясе Москвы
+    const currentDate = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Moscow" }));
     const monthIndex = currentDate.getMonth();
     const month = months[monthIndex];
     const day = currentDate.getDate();
@@ -40,12 +41,12 @@ async function updateChannelName() {
 
     const newName = `${emojiForMonth}┃Дата: ${day} ${month}`;
     await channel.setName(newName);
-    console.log(`Имя канала изменено на: ${newName}`);
+    console.log(`Имя канала изменено на: ${newName} (Дата: ${currentDate.toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })})`);
 }
 
+// Функция для получения текущей даты в нужном формате
 function getCurrentDateFormatted() {
-    const currentDate = new Date();
-    // Устанавливаем часовой пояс на Москву
+    const currentDate = new Date(new Date().toLocaleString("en-US", { timeZone: 'Europe/Moscow' }));
     const options = { timeZone: 'Europe/Moscow', day: 'numeric', month: 'long', year: 'numeric' };
     const formatter = new Intl.DateTimeFormat('ru-RU', options);
     const [day, month] = formatter.format(currentDate).split(' ');
@@ -103,7 +104,7 @@ client.on('interactionCreate', async interaction => {
             .setTitle('📅┃Сегодняшняя дата') // Заголовок
             .setDescription(`${emojiForMonth}┃Сегодня: **${day} ${month}**`) // Описание
             .setThumbnail('https://i.imgur.com/MyLllJx.png') // Иконка
-            .setTimestamp(new Date()) // Текущая дата/время
+            .setTimestamp(new Date(new Date().toLocaleString("en-US", { timeZone: 'Europe/Moscow' }))) // Текущая дата/время по МСК
             .setFooter({ text: 'Дата предоставлена SQUAD по МСК', iconURL: 'https://i.imgur.com/MyLllJx.png' }); // Подпись
 
         await interaction.reply({ embeds: [embed] }); // Отправляем embed
@@ -113,7 +114,7 @@ client.on('interactionCreate', async interaction => {
             .setTitle('🟢┃Статус бота')
             .setDescription('Бот работает стабильно!')
             .addFields({ name: '🔗┃Ссылка на аптаймер', value: '[Проверить статус](https://stats.uptimerobot.com/m9spnIIBsW)' }) // Используем addFields
-            .setTimestamp(new Date()) 
+            .setTimestamp(new Date(new Date().toLocaleString("en-US", { timeZone: 'Europe/Moscow' }))) 
             .setFooter({ text: 'Статус предоставлен SQUAD', iconURL: 'https://i.imgur.com/MyLllJx.png' });
         await interaction.reply({ embeds: [statusEmbed] });
         console.log('Status embed sent'); // Логирование успешной отправки
