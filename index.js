@@ -100,9 +100,9 @@ client.on('interactionCreate', async interaction => {
             .setColor('#a7c3ff') // Устанавливаем цвет
             .setTitle('📅┃Сегодняшняя дата') // Заголовок
             .setDescription(`${emojiForMonth}┃Сегодня: **${day} ${month}**`) // Описание
-            .setThumbnail('https://i.imgur.com/MyLllJx.png') // Иконка (можно заменить)
+            .setThumbnail('https://i.imgur.com/MyLllJx.png') // Иконка
             .setTimestamp(new Date()) // Текущая дата/время
-            .setFooter({ text: 'Дата предоставлена SQUAD по МСК', iconURL: 'https://i.imgur.com/MyLllJx.png' }); // Подпись
+            .setFooter({ text: 'Дата предоставлена SQUAD по МСК', iconURL: 'https://i.imgur.com/oVwkatn.png' }); // Подпись
 
         await interaction.reply({ embeds: [embed] }); // Отправляем embed
     }
