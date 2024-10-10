@@ -44,6 +44,19 @@ async function updateChannelName() {
     console.log(`Имя канала изменено на: ${newName}`);
 }
 
+// Логирование следующей смены названия канала
+function logNextUpdateTime() {
+    const currentDate = new Date();
+    const nextMidnightMsk = new Date(currentDate.toLocaleString("en-US", { timeZone: "Europe/Moscow" }));
+    nextMidnightMsk.setHours(24, 0, 0, 0); // Устанавливаем на следующую полночь по МСК
+
+    const options = { timeZone: 'Europe/Moscow', day: 'numeric', month: 'long' };
+    const formatter = new Intl.DateTimeFormat('ru-RU', options);
+    const [day, month] = formatter.format(nextMidnightMsk).split(' ');
+
+    console.log(`Следующее обновление канала будет: ${day} ${month} в 00:00 по МСК`);
+}
+
 // Регистрация команды /date
 const commands = [
     new SlashCommandBuilder()
@@ -70,9 +83,13 @@ client.once('ready', async () => {
         console.error('Ошибка при регистрации команд:', error);
     }
 
-    // Запуск задачи по расписанию каждый день в 00:00 по МСК (23:00 по Франкфурту)
+    // Логирование следующего обновления
+    logNextUpdateTime();
+
+    // Запуск задачи по расписанию каждый день в 00:00 по МСК 
     cron.schedule('0 0 * * *', () => {
         updateChannelName();
+        logNextUpdateTime(); // Обновление следующего времени после смены
     }, {
         timezone: "Europe/Moscow" // Устанавливаем часовой пояс на Москву 
     });
