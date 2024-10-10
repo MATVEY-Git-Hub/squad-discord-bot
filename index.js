@@ -109,9 +109,9 @@ client.on('interactionCreate', async interaction => {
     } else if (interaction.commandName === 'status') {
         console.log('Handling /status command'); // Логирование команды status
         const statusEmbed = new EmbedBuilder().setColor('#00FF00')
-            .setTitle('🟢 Статус бота')
+            .setTitle('🟢┃Статус бота')
             .setDescription('Бот работает стабильно!')
-            .addFields({ name: '🔗 Ссылка на аптаймер', value: '[Проверить статус](https://stats.uptimerobot.com/m9spnIIBsW)' }) // Используем addFields
+            .addFields({ name: '🔗┃Ссылка на аптаймер', value: '[Проверить статус](https://stats.uptimerobot.com/m9spnIIBsW)' }) // Используем addFields
             .setTimestamp(new Date()) 
             .setFooter({ text: 'Статус предоставлен SQUAD', iconURL: 'https://i.imgur.com/MyLllJx.png' });
         await interaction.reply({ embeds: [statusEmbed] });
