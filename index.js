@@ -33,10 +33,10 @@ async function updateChannelName() {
     const channel = guild.channels.cache.get(channelId);
 
     const currentDate = new Date();
-    const options = { timeZone: 'Europe/Moscow', day: 'numeric', month: 'long' };
-    const formatter = new Intl.DateTimeFormat('ru-RU', options);
-    const [day, month] = formatter.format(currentDate).split(' ');
-    const monthIndex = currentDate.getMonth();
+    const moscowDate = new Date(currentDate.toLocaleString("en-US", { timeZone: "Europe/Moscow" }));
+    const day = moscowDate.getDate();
+    const monthIndex = moscowDate.getMonth();
+    const month = months[monthIndex];  // Название месяца из массива
     const emojiForMonth = emojis[monthIndex];  // Эмодзи для текущего месяца
 
     const newName = `${emojiForMonth}┃Дата: ${day} ${month}`;
@@ -50,9 +50,8 @@ function logNextUpdateTime() {
     const nextMidnightMsk = new Date(currentDate.toLocaleString("en-US", { timeZone: "Europe/Moscow" }));
     nextMidnightMsk.setHours(24, 0, 0, 0); // Устанавливаем на следующую полночь по МСК
 
-    const options = { timeZone: 'Europe/Moscow', day: 'numeric', month: 'long' };
-    const formatter = new Intl.DateTimeFormat('ru-RU', options);
-    const [day, month] = formatter.format(nextMidnightMsk).split(' ');
+    const day = nextMidnightMsk.getDate();
+    const month = months[nextMidnightMsk.getMonth()]; // Название месяца из массива
 
     console.log(`Следующее обновление канала будет: ${day} ${month} в 00:00 по МСК`);
 }
@@ -104,10 +103,10 @@ client.on('interactionCreate', async interaction => {
     console.log(`Received command: ${interaction.commandName}`); // Логирование команды
     if (interaction.commandName === 'date') {
         const currentDate = new Date();
-        const options = { timeZone: 'Europe/Moscow', day: 'numeric', month: 'long' };
-        const formatter = new Intl.DateTimeFormat('ru-RU', options);
-        const [day, month] = formatter.format(currentDate).split(' ');
-        const monthIndex = currentDate.getMonth();
+        const moscowDate = new Date(currentDate.toLocaleString("en-US", { timeZone: "Europe/Moscow" }));
+        const day = moscowDate.getDate();
+        const monthIndex = moscowDate.getMonth();
+        const month = months[monthIndex]; // Название месяца из массива
         const emojiForMonth = emojis[monthIndex];
 
         // Создаём embed-сообщение
